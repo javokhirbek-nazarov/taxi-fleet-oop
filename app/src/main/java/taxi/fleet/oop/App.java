@@ -3,12 +3,79 @@
  */
 package taxi.fleet.oop;
 
+import java.util.Random;
+import taxi.fleet.oop.booking.BookingCenter;
+import taxi.fleet.oop.communication.DirectCommunicationStrategy;
+import taxi.fleet.oop.communication.LogCommunicationStrategy;
+import taxi.fleet.oop.dashboard.BookingDashboard;
+import taxi.fleet.oop.dashboard.Dashboard;
+import taxi.fleet.oop.taxi.Taxi;
+import taxi.fleet.oop.taxi.TaxiFleet;
+
 public class App {
+
     public String getGreeting() {
         return "Hello World!";
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+    public static void main(String[] args) throws InterruptedException {
+
+        TaxiFleet fleet = new TaxiFleet();
+        BookingCenter bookingCenter = new BookingCenter();
+
+        Taxi taxi1 = new Taxi("T1", "Location1", bookingCenter);
+        taxi1.getMessageCommunicationAgent().setCommunicationStrategy(
+            LogCommunicationStrategy.of(DirectCommunicationStrategy.get()));
+        fleet.addTaxi(taxi1);
+
+        Taxi taxi2 = new Taxi("T2", "Location2", bookingCenter);
+        fleet.addTaxi(taxi2);
+
+        Dashboard dashboard = new BookingDashboard(bookingCenter);
+        dashboard.displayStatistics();
+        fleet.listAllTaxis();
+
+        bookingCenter.newBooking("B1", "John Doe");
+        dashboard.displayStatistics();
+        Taxi taxi3 = new Taxi("T3", "Location3", bookingCenter);
+        fleet.addTaxi(taxi3);
+        fleet.listAllTaxis();
+
+        bookingCenter.newBooking("B2", "Elma Soft");
+        dashboard.displayStatistics();
+        fleet.listAllTaxis();
+
+//        // Simulate booking process with threads
+//        Random random = new Random();
+//        Runnable bookingTask = () -> {
+//            try {
+//                Thread.sleep(random.nextInt(3000)); // Simulate random delay
+//                String bookingId = "B" + random.nextInt(1000);
+//                System.out.println("Publishing booking " + bookingId);
+//                bookingCenter.publishBooking(bookingId);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//            }
+//        };
+//
+//        // Start booking thread
+//        Thread bookingThread = new Thread(bookingTask);
+//        bookingThread.start();
+//
+//        try {
+//            bookingThread.join(); // Wait for booking thread to finish
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
+//
+//        // Display statistics after booking
+//        System.out.println("\nAfter booking:");
+//        dashboard.displayStatistics();
+//
+//        // Shutdown services
+//        bookingCenter.shutdown();
+//        agent1.shutdown();
+//        agent2.shutdown();
+
     }
 }

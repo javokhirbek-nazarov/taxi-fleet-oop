@@ -23,6 +23,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation libs.guava
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
