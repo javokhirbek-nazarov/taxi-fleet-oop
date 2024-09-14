@@ -25,18 +25,24 @@ flexible and loosely coupled solution. When taxi becomes AVAILABLE they subscrib
 when they change their status to BOOKED they unsubscribe. 
 In turn booking service publishes new booking to all subscribed (AVAILABLE) taxis 
 
+![img.png](diagrams/observer.png)
+
 ### State Pattern
 Booking should have many states like NEW, TAKEN, COMPLETE and more.
 And what is more taxi drivers or clients can do many actions like create, complete, take, cancel and more
 When we implement these methods we soon realise that for each method we need to check 
 state of booking and perform action appreciate for that state making usage of if/else statements abundant.
 These kind of code hard to change and maintain. Instead, here using **State pattern** allows having easy to read code 
-and makes adding new state really easy like waiting state or more.
+and makes adding new state really easy like waiting state or more. 
+
+![img.png](diagrams/state.png)
 
 ### Template pattern
 As we can have many types of dashboards and each have repeating structure 
 it was best to use **Template pattern** here. Actual statistics generation is decided by child classes
 however base Dashboard class decides where to call that logic and provides nice public interface
+
+![img.png](diagrams/template.png)
 
 ### Strategy pattern
 Each taxi has a taxi agent which has the capability to send message to other taxis or
@@ -45,6 +51,8 @@ And preferably if we can change this logic in runtime it would make our code fle
 For example, we can by default provide direct communication logic but if need be taxi agent can use 
 logging communication logic which is great for debugging. Because of this it best suited to use
 **Strategy pattern** here.
+
+![img.png](diagrams/strategy.png)
 
 ### Singleton Pattern
 DirectCommunicationStrategy class only responsible to deliver message to recipient
