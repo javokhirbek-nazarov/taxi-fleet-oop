@@ -3,7 +3,6 @@
  */
 package taxi.fleet.oop;
 
-import java.util.Random;
 import taxi.fleet.oop.booking.BookingCenter;
 import taxi.fleet.oop.communication.DirectCommunicationStrategy;
 import taxi.fleet.oop.communication.LogCommunicationStrategy;
@@ -44,38 +43,5 @@ public class App {
         bookingCenter.newBooking("B2", "Elma Soft");
         dashboard.displayStatistics();
         fleet.listAllTaxis();
-
-//        // Simulate booking process with threads
-//        Random random = new Random();
-//        Runnable bookingTask = () -> {
-//            try {
-//                Thread.sleep(random.nextInt(3000)); // Simulate random delay
-//                String bookingId = "B" + random.nextInt(1000);
-//                System.out.println("Publishing booking " + bookingId);
-//                bookingCenter.publishBooking(bookingId);
-//            } catch (InterruptedException e) {
-//                Thread.currentThread().interrupt();
-//            }
-//        };
-//
-//        // Start booking thread
-//        Thread bookingThread = new Thread(bookingTask);
-//        bookingThread.start();
-//
-//        try {
-//            bookingThread.join(); // Wait for booking thread to finish
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
-//        }
-//
-//        // Display statistics after booking
-//        System.out.println("\nAfter booking:");
-//        dashboard.displayStatistics();
-//
-//        // Shutdown services
-//        bookingCenter.shutdown();
-//        agent1.shutdown();
-//        agent2.shutdown();
-
     }
 }
