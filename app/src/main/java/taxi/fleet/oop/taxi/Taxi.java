@@ -16,14 +16,14 @@ public class Taxi implements Observer<Booking> {
 
     private TaxiStatus status;
 
-    private final Observable<Booking> observer;
+    private final Observable<Booking> observable;
 
     private final MessageCommunicationAgent taxiAgent;
 
     public Taxi(String id, String location, Observable<Booking> bookingCenter) {
         this.id = id;
         this.location = location;
-        this.observer = bookingCenter;
+        this.observable = bookingCenter;
         this.taxiAgent = new TaxiAgent(this);
         setStatus(TaxiStatus.AVAILABLE);
     }
@@ -63,9 +63,9 @@ public class Taxi implements Observer<Booking> {
     public void setStatus(TaxiStatus status) {
         this.status = status;
         if (status == TaxiStatus.AVAILABLE) {
-            observer.subscribe(this);
+            observable.subscribe(this);
         } else {
-            observer.unSubscribe(this);
+            observable.unSubscribe(this);
         }
     }
 

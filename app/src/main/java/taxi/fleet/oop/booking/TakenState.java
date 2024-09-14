@@ -41,7 +41,7 @@ class TakenState implements BookingState {
 
     private void runCheck() {
         if (booking.getTaxi().isEmpty()) {
-            throw new IllegalStateException("Should never happen");
+            throw new IllegalStateException("Should never happen: not taxi assigned");
         }
     }
 }
