@@ -138,7 +138,7 @@ public class App {
     private static void printOptions() {
         System.out.println();
         System.out.println("1. List taxis");
-        System.out.println("3. Add Taxi");
+        System.out.println("2. Add Taxi");
         System.out.println("3. Set Taxi Status");
         System.out.println("4. Booking Dashboard");
         System.out.println("5. New booking");
