@@ -12,9 +12,9 @@ class NewState implements BookingState {
 
     @Override
     public boolean take(Taxi taxi) {
-        System.out.println("Taking booking with id " + booking.getId());
         booking.setTaxi(taxi);
         booking.setState(booking.getTakenState());
+        System.out.println("Taxi (Id = " + taxi.getId() + ") took booking (Id = " + booking.getId() + ")\n");
         return true;
     }
 

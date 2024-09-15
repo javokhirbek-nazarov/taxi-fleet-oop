@@ -3,6 +3,9 @@
  */
 package taxi.fleet.oop;
 
+import static taxi.fleet.oop.taxi.TaxiStatus.BOOKED;
+
+import java.util.Scanner;
 import taxi.fleet.oop.booking.BookingCenter;
 import taxi.fleet.oop.communication.DirectCommunicationStrategy;
 import taxi.fleet.oop.communication.LogCommunicationStrategy;
@@ -10,6 +13,7 @@ import taxi.fleet.oop.dashboard.BookingDashboard;
 import taxi.fleet.oop.dashboard.Dashboard;
 import taxi.fleet.oop.taxi.Taxi;
 import taxi.fleet.oop.taxi.TaxiFleet;
+import taxi.fleet.oop.taxi.TaxiStatus;
 
 public class App {
 
@@ -21,27 +25,132 @@ public class App {
 
         TaxiFleet fleet = new TaxiFleet();
         BookingCenter bookingCenter = new BookingCenter();
+        Dashboard dashboard = new BookingDashboard(bookingCenter);
+        Scanner scanner = new Scanner(System.in);
 
+        // Initialize with 4 taxis
+        initializeFleet(fleet, bookingCenter);
+
+        while (true) {
+
+            printOptions();
+            String option = scanner.nextLine();
+
+            if ("8".equals(option)) {
+                break;
+            }
+
+            switch (option) {
+                case "1":
+                    // List all taxis
+                    fleet.listAllTaxis();
+                    break;
+
+                case "2":
+                    // Add new taxi
+                    System.out.println("Enter Taxi ID, Location (comma-separated):");
+                    String taxiInput = scanner.nextLine();
+                    String[] taxiDetails = taxiInput.split(",");
+                    if (taxiDetails.length != 2) {
+                        System.out.println("Invalid input. Please enter Taxi ID, Location.");
+                        break;
+                    }
+                    String taxiId = taxiDetails[0].trim();
+                    String location = taxiDetails[1].trim();
+                    Taxi taxi = new Taxi(taxiId, location, bookingCenter);
+                    taxi.getMessageCommunicationAgent().setCommunicationStrategy(
+                        LogCommunicationStrategy.of(DirectCommunicationStrategy.get()));
+                    fleet.addTaxi(taxi);
+                    System.out.println("Taxi added successfully.");
+                    break;
+
+                case "3":
+                    // Set taxi status
+                    System.out.println("Enter Taxi Id you want to change status of");
+                    String selectedTaxiId = scanner.nextLine();
+                    var optTaxi = fleet.getTaxi(selectedTaxiId.trim());
+                    optTaxi.ifPresentOrElse(t -> {
+                            t.setStatus(BOOKED.equals(t.getStatus()) ? TaxiStatus.AVAILABLE : BOOKED, true);
+                            System.out.println("Successfully changed taxi status to " + t.getStatus());
+                        },
+                        () -> System.out.println("No taxi found with given id"));
+                    break;
+
+                case "4":
+                    // Booking Dashboard
+                    dashboard.displayStatistics();
+                    break;
+
+                case "5":
+                    // New Booking
+                    System.out.println("Enter Booking ID, client (comma-separated):");
+                    String bookingInput = scanner.nextLine();
+                    String[] bookingDetails = bookingInput.split(",");
+                    if (bookingDetails.length != 2) {
+                        System.out.println("Invalid input. Please enter Booking Id, Location.");
+                        break;
+                    }
+                    String bookingId = bookingDetails[0].trim();
+                    String bookingClient = bookingDetails[1].trim();
+                    bookingCenter.newBooking(bookingId, bookingClient);
+                    break;
+
+                case "6":
+                    // Cancel Booking
+                    System.out.print("Enter Booking ID: ");
+                    String cancelBookingId = scanner.nextLine().trim();
+                    bookingCenter.cancel(cancelBookingId);
+                    break;
+                case "7":
+                    // Complete Booking
+                    System.out.print("Enter Booking ID: ");
+                    String completeBookingId = scanner.nextLine().trim();
+                    bookingCenter.complete(completeBookingId);
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please select 1, 2, or 3.");
+                    break;
+            }
+        }
+
+        scanner.close();
+
+        // Perform any necessary cleanup
+        System.out.println("Shutting down services...");
+
+    }
+
+    private static void initializeFleet(TaxiFleet fleet, BookingCenter bookingCenter) {
         Taxi taxi1 = new Taxi("T1", "Location1", bookingCenter);
         taxi1.getMessageCommunicationAgent().setCommunicationStrategy(
             LogCommunicationStrategy.of(DirectCommunicationStrategy.get()));
-        fleet.addTaxi(taxi1);
-
         Taxi taxi2 = new Taxi("T2", "Location2", bookingCenter);
-        fleet.addTaxi(taxi2);
-
-        Dashboard dashboard = new BookingDashboard(bookingCenter);
-        dashboard.displayStatistics();
-        fleet.listAllTaxis();
-
-        bookingCenter.newBooking("B1", "John Doe");
-        dashboard.displayStatistics();
         Taxi taxi3 = new Taxi("T3", "Location3", bookingCenter);
-        fleet.addTaxi(taxi3);
-        fleet.listAllTaxis();
+        Taxi taxi4 = new Taxi("T4", "Location4", bookingCenter);
 
-        bookingCenter.newBooking("B2", "Elma Soft");
-        dashboard.displayStatistics();
+        fleet.addTaxi(taxi1);
+        fleet.addTaxi(taxi2);
+        fleet.addTaxi(taxi3);
+        fleet.addTaxi(taxi4);
+
+        System.out.println("Initial taxi fleet:");
         fleet.listAllTaxis();
     }
+
+    private static void printOptions() {
+        System.out.println();
+        System.out.println("1. List taxis");
+        System.out.println("3. Add Taxi");
+        System.out.println("3. Set Taxi Status");
+        System.out.println("4. Booking Dashboard");
+        System.out.println("5. New booking");
+        System.out.println("6. Driver Cancel Booking");
+        System.out.println("7. Driver Complete Booking");
+        System.out.println("8. Exit");
+
+        System.out.print("\nSelect an option: ");
+    }
+
+
 }

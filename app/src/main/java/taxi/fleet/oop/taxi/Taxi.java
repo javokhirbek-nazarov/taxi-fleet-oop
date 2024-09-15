@@ -20,6 +20,8 @@ public class Taxi implements Observer<Booking> {
 
     private final MessageCommunicationAgent taxiAgent;
 
+    private Booking currentBooking;
+
     public Taxi(String id, String location, Observable<Booking> bookingCenter) {
         this.id = id;
         this.location = location;
@@ -32,15 +34,16 @@ public class Taxi implements Observer<Booking> {
 
         //To simulate waiting time before response
         Random random = new Random();
-        Thread.sleep(random.nextInt(100));
+        Thread.sleep(random.nextInt(1000));
 
         if (TaxiStatus.BOOKED.equals(status)) {
             throw new IllegalStateException("Can not be updated with booking when already booked");
-        } else if (BookingStatus.NEW.equals(booking.getStatus())) {
-            var took = booking.take(this);
-            if (took) {
-                setStatus(TaxiStatus.BOOKED);
-            }
+        }
+
+        var took = booking.take(this);
+        if (took) {
+            currentBooking = booking;
+            setStatus(TaxiStatus.BOOKED);
         }
     }
 
@@ -66,6 +69,15 @@ public class Taxi implements Observer<Booking> {
             observable.subscribe(this);
         } else {
             observable.unSubscribe(this);
+        }
+    }
+
+    public void setStatus(TaxiStatus status, boolean filterDown){
+        if (currentBooking != null && filterDown) {
+            currentBooking.complete();
+            currentBooking = null;
+        }else{
+            setStatus(status);
         }
     }
 

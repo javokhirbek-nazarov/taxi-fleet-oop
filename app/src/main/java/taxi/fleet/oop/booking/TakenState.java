@@ -15,7 +15,7 @@ class TakenState implements BookingState {
     public boolean take(Taxi taxi) {
         runCheck();
         var taxiId = booking.getTaxi().get().getId();
-        System.out.println("Warning already taken by a taxi with id " + taxiId);
+        System.out.println("Warning: Booking (Id = " + booking.getId() + ") already taken by a Taxi (Id = " + taxiId + ")\n");
         return false;
     }
 

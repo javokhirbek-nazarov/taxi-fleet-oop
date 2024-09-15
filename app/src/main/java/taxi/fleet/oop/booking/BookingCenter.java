@@ -3,6 +3,7 @@ package taxi.fleet.oop.booking;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,6 +32,7 @@ public class BookingCenter implements Observable<Booking> {
         if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
             executorService.shutdownNow();
         }
+        newBooking = null;
     }
 
     private Runnable getRunnableForObserver(Observer<Booking> observer) {
@@ -56,8 +58,8 @@ public class BookingCenter implements Observable<Booking> {
     public void newBooking(String id, String client) throws InterruptedException {
         newBooking = new Booking(id, client);
         bookingMap.put(newBooking.getId(), newBooking);
+        System.out.println("Successfully created new booking");
         updateObservers();
-        newBooking = null;
     }
 
     public BookingStatistics getStatistics() {
@@ -80,7 +82,26 @@ public class BookingCenter implements Observable<Booking> {
         var totalCount = bookings.size();
         bookingStatistics.setTotalCount(totalCount);
 
+        bookingStatistics.setAvailableTaxiCount(observers.size());
+
         return bookingStatistics;
+    }
+
+    public void cancel(String id) throws InterruptedException {
+        Booking booking = bookingMap.getOrDefault(id, null);
+        if (booking == null) {
+            System.out.println("No booking found with given id");
+        } else {
+            booking.cancel();
+            newBooking = booking;
+            updateObservers();
+        }
+    }
+
+    public void complete(String id) {
+        Optional.ofNullable(bookingMap.getOrDefault(id, null))
+            .ifPresentOrElse(Booking::complete,
+                () -> System.out.println("No booking found with given id"));
     }
 
 }

@@ -29,7 +29,7 @@ public class Booking {
     }
 
     public synchronized boolean take(Taxi taxi) {
-        System.out.println("Trying to take a booking with id " + getId());
+        System.out.println("Taxi (Id = " + taxi.getId() + ") is trying to take a booking with id " + getId());
         return state.take(taxi);
     }
 

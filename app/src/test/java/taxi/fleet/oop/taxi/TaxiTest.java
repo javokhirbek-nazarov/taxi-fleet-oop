@@ -75,12 +75,12 @@ class TaxiTest {
     }
 
     @Test
-    void testUpdateWithNonNewBookingDoesNotTake() throws InterruptedException {
+    void testUpdateWithNonNewBooking() throws InterruptedException {
         when(booking.getStatus()).thenReturn(BookingStatus.COMPLETE);
 
         taxi.update(booking);
 
         assertEquals(TaxiStatus.AVAILABLE, taxi.getStatus());
-        verify(booking, times(0)).take(any(Taxi.class));
+        verify(booking, times(1)).take(any(Taxi.class));
     }
 }

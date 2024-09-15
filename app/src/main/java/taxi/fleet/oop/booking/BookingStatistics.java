@@ -10,6 +10,8 @@ public class BookingStatistics {
 
     private long totalCount;
 
+    private long availableTaxiCount;
+
     public long getNewCount() {
         return newCount;
     }
@@ -42,6 +44,14 @@ public class BookingStatistics {
         this.completeCount = completeCount;
     }
 
+    public long getAvailableTaxiCount() {
+        return availableTaxiCount;
+    }
+
+    public void setAvailableTaxiCount(long availableTaxiCount) {
+        this.availableTaxiCount = availableTaxiCount;
+    }
+
     @Override
     public String toString() {
         return "Booking Statistics {" +
@@ -49,6 +59,7 @@ public class BookingStatistics {
             ", takenCount=" + takenCount +
             ", completeCount=" + completeCount +
             ", totalCount=" + totalCount +
+            ", availableTaxiCount=" + availableTaxiCount +
             '}';
     }
 }
