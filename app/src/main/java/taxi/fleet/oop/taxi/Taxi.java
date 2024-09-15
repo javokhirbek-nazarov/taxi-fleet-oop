@@ -69,13 +69,13 @@ public class Taxi implements Observer<Booking> {
             observable.subscribe(this);
         } else {
             observable.unSubscribe(this);
-            currentBooking = null;
         }
     }
 
     public void setStatus(TaxiStatus status, boolean filterDown){
         if (currentBooking != null && filterDown) {
             currentBooking.complete();
+            currentBooking = null;
         }else{
             setStatus(status);
         }
