@@ -65,4 +65,41 @@ LogCommunicationStrategy provides static method to create its instance
 this allows better approach to create objects as static method names make them easier to understand 
 the difference between overloaded implementations.
 
+## Sequence Diagrams
 
+### New booking
+![img.png](diagrams/new-booking.png) \
+![img.png](diagrams/new-booking-update.png)
+
+### Dashboard statistics
+![img.png](diagrams/dashboard-statistics.png)
+
+### Taxi set status
+![img.png](diagrams/taxi-set-status.png)
+
+### List taxis
+![img.png](diagrams/list-taxis.png)
+
+### Cancel booking
+![img.png](diagrams/booking-cancel.png)
+
+### Complete booking
+![img.png](diagrams/booking-complete.png)
+
+### Add taxi
+![img.png](diagrams/add-taxi.png)
+
+
+## Answers:
+1. What aspect of this exercise did you find most interesting?
+    
+Some many possibilities to use design patterns, makes you add more features even though not asked. 
+Exactly right amount of expectations are asked to showcase good programming skills
+
+2. What did you find most cumbersome?
+
+Lack of communication, in reality working on this kind of project should be based on clinet requiremnts
+and engineer should decide on using design patterns based on change requirements that may arise in the future too 
+In this task this was not possible as future changes are not specified and there was no way of asking about them
+Also, it was really hard for me to choose between pure java (better shows OOP, Design Pattern skills) with CLI (Hard to use)
+and Framework base (much easier to use, shows framework knowledge, limited to framework design) with React UI (more appealing to use)
