@@ -115,10 +115,7 @@ public class App {
         }
 
         scanner.close();
-
-        // Perform any necessary cleanup
         System.out.println("Shutting down services...");
-
     }
 
     private static void initializeFleet(TaxiFleet fleet, BookingCenter bookingCenter) {

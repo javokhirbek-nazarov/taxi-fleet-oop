@@ -8,7 +8,7 @@ Application output is shown only in console
 - Have **Java 11** or newer version (**17** preferred) installed 
 - Clone the project (`git clone git@github.com:javokhirbek-nazarov/taxi-fleet-oop.git`)
 - Go to root folder of the project and open a terminal there
-- run `./gradlew run` command in the terminal
+- run `./gradlew run --console=plain` command in the terminal
 - You should see output being printed in the console
 
 ## How to run unit tests
